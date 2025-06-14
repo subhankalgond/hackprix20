@@ -1,2 +1,2 @@
 # hackprix20
-### Smart Health Guardian: A Personalized AI + IoT Health Monitoring Ecosystem
+### Smart Health Advisor: AI-Powered Disease Prediction from Symptoms
