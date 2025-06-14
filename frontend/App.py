@@ -5,8 +5,14 @@ st.set_page_config(page_title="AI Doctor Assistant", layout="centered")
 
 st.title("🧠 AI-Assisted Doctor Tool")
 
-# Symptom selection
-symptoms = [
+st.markdown("""
+Welcome to the AI Doctor Assistant.  
+This tool helps healthcare professionals by suggesting next steps or considerations based on reported symptoms.  
+
+⚠️ **Note**: This tool does *not* provide a diagnosis.
+""")
+
+symptoms = [  # (Same list as yours)
     'itching','skin_rash','nodal_skin_eruptions','dischromic__patches','continuous_sneezing','shivering',
     'chills','watering_from_eyes','stomach_pain','acidity','ulcers_on_tongue','vomiting','cough',
     'chest_pain','yellowish_skin','nausea','loss_of_appetite','abdominal_pain','yellowing_of_eyes',
@@ -34,27 +40,25 @@ if st.button("Get Assistance"):
     if not selected_symptoms:
         st.warning("Please select at least one symptom.")
     else:
-        with st.spinner("Analyzing..."):
+        with st.spinner("Consulting AI Doctor..."):
             try:
-                res = requests.post("http://localhost:5000/assist", json={"symptoms": selected_symptoms})
-                if res.status_code == 200:
-                    result = res.json()
-                    suggestions = result.get("suggestions", [])
-                    
-                    st.success("Suggestions Ready!")
+                response = requests.post(
+                    "http://127.0.0.1:5000/ai-suggest",
+                    json={"symptoms": selected_symptoms},
+                    timeout=40
+                )
+                if response.status_code == 200:
+                    result = response.json()
 
-                    st.subheader("🧬 Top Possible Conditions")
-                    for i, (disease, score) in enumerate(suggestions, start=1):
-                        st.write(f"**{i}. {disease}** - Confidence: `{score*100:.2f}%`")
-                    
-                    st.subheader("📝 Auto-generated Clinical Note")
-                    note = (
-                        f"Patient reports symptoms including {', '.join(selected_symptoms)}. "
-                        f"Based on symptom analysis, the most likely conditions are: "
-                        f"{', '.join([d for d, _ in suggestions])}. Further clinical evaluation is advised."
-                    )
-                    st.text_area("Clinical Summary", value=note, height=150)
+                    # Show predictions
+                    st.subheader("🧬 Top Disease Predictions")
+                    for disease, prob in result["top_predictions"]:
+                        st.markdown(f"- **{disease}** ({prob*100:.2f}% confidence)")
+
+                    # Show AI suggestion
+                    st.subheader("💡 AI Clinical Suggestions")
+                    st.success(result["suggestion"])
                 else:
-                    st.error("❌ Failed to get response from AI assistant.")
+                    st.error("AI could not generate suggestions. Try again.")
             except Exception as e:
-                st.error(f"Failed to get assistance. Error: {e}")
+                st.error(f"Request failed: {e}")
