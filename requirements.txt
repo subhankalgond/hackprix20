@@ -1,0 +1,13 @@
+Flask
+request
+jsonify
+CORS
+pickle
+numpy
+Llama
+sklearn
+RandomForestClassifier
+train_test_split
+accuracy_score
+streamlit
+requests
