@@ -36,53 +36,53 @@ st.markdown("""
         width: 48px;
         height: 48px;
         border-radius: 12px;
-        background: #1e293b;
+        background: #e6f6fd;
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 2rem;
-        color: #3b82f6;
-        box-shadow: 0 2px 8px rgba(59,130,246,0.08);
+        color: #2D9CDB;
+        box-shadow: 0 2px 8px rgba(45,156,219,0.10);
     }
     .medical-title {
         font-size: 2.1rem;
         font-weight: 600;
-        color: #e0e7ef;
+        color: #1a365d;
         letter-spacing: -1px;
     }
     .app-content {
         position: relative;
         z-index: 1;
-        background-color: #181c23;
-        color: #e0e7ef;
+        background-color: #fff;
+        color: #3a4a5d;
         border-radius: 1.2rem;
         margin-top: 2.5rem;
         margin-left: auto;
         margin-right: auto;
         max-width: 900px;
-        box-shadow: 0 4px 32px rgba(16,19,26,0.18);
+        box-shadow: 0 4px 32px rgba(45,156,219,0.08);
     }
     .card-section {
-        background: #151922;
+        background: #fafdff;
         border-radius: 1rem;
-        box-shadow: 0 2px 12px rgba(59,130,246,0.07);
+        box-shadow: 0 2px 12px rgba(45,156,219,0.07);
         margin-bottom: 1.5rem;
-        border-left: 4px solid #3b82f6;
+        border-left: 4px solid #2D9CDB;
     }
     .ai-answer-container {
-        background: #10131a;
-        color: #e0e7ef;
+        background: #e6f6fd;
+        color: #1a365d;
         border-radius: 0.8rem;
-        box-shadow: 0 1px 8px rgba(59,130,246,0.08);
+        box-shadow: 0 1px 8px rgba(45,156,219,0.08);
         margin-top: 1.2rem;
         max-height: 180px;
         overflow-y: auto;
         font-size: 1.08rem;
         line-height: 1.6;
-        border: 1px solid #23304a;
+        border: 1px solid #b3e0fa;
     }
     .stButton>button {
-        background: #3b82f6;
+        background: linear-gradient(90deg, #2D9CDB 0%, #56CCF2 100%);
         color: #fff;
         border-radius: 0.5rem;
         font-weight: 600;
@@ -91,13 +91,14 @@ st.markdown("""
         font-size: 1.1rem;
         margin-top: 0.5rem;
         transition: background 0.2s;
+        box-shadow: 0 2px 8px rgba(45,156,219,0.08);
     }
     .stButton>button:hover {
-        background: #2563eb;
+        background: linear-gradient(90deg, #2196F3 0%, #2D9CDB 100%);
     }
     .stMultiSelect>div>div {
-        background: #181c23 !important;
-        color: #e0e7ef !important;
+        background: #fafdff !important;
+        color: #1a365d !important;
     }
     </style>
 
@@ -177,7 +178,18 @@ with col2:
                             st.markdown('<div class="ai-answer-container">', unsafe_allow_html=True)
                             for line in suggestion.split("\n"):
                                 if line.strip():
-                                    st.markdown(f"- {line.strip()}")
+                                    l = line.strip().lower()
+                                    if any(k in l for k in ["test", "investigat", "lab"]):
+                                        icon = "🧪"
+                                    elif any(k in l for k in ["ask", "question", "history"]):
+                                        icon = "❓"
+                                    elif any(k in l for k in ["symptom", "sign", "present"]):
+                                        icon = "🔎"
+                                    elif any(k in l for k in ["differenti", "consider", "rule out"]):
+                                        icon = "🩺"
+                                    else:
+                                        icon = "💡"
+                                    st.markdown(f"<span style='font-size:18px;'>{icon}</span> {line}", unsafe_allow_html=True)
                             st.markdown('</div>', unsafe_allow_html=True)
                         else:
                             st.success("General advice: Stay hydrated, monitor your condition, and consult a medical professional.")
