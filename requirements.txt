@@ -11,3 +11,5 @@ train_test_split
 accuracy_score
 streamlit
 requests
+google-generativeai
+python-dotenv
