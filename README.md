@@ -1,5 +1,5 @@
 # hackprix20
-##🧠 AI Doctor Assistance
+##🧠 AI Clinical Assistance
 
 An intelligent medical support tool that helps doctors make informed decisions by combining Machine Learning predictions and Generative AI suggestions — all through a beautiful, interactive UI.
 
